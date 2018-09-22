@@ -10,20 +10,23 @@ import java.awt.image.BufferedImage;
 
 import javax.swing.JPanel;
 
-public class plansza extends JPanel implements MouseListener{
+import gomoku.form;
+
+public class plansza extends JPanel {
 	
 	int[][] grid = new int[15][15];
 	BufferedImage krzyzyk =new BufferedImage(28, 28 ,BufferedImage.TYPE_INT_ARGB);
 	BufferedImage kolko = new BufferedImage(28, 28 ,BufferedImage.TYPE_INT_ARGB);
-	
+	public boolean pierwszy = false;
+	public boolean ruch;
 	
  public plansza() {
 	 this.setSize(15*30+1 ,15*30 +1);
-	 this.addMouseListener(this);
+	 //this.addMouseListener(this);
 	 rysuj_krz();
  }
  
- 
+ 	@Override
 	public void paintComponent(Graphics g) {
 		super.paintComponent(g);
 		((Graphics2D) g).setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
@@ -60,43 +63,6 @@ public class plansza extends JPanel implements MouseListener{
 		
 		
 	}
-	@Override
-	public void mouseClicked(MouseEvent e) {
-		int tempx =e.getX();
-		int tempy =e.getY();
-		
-		int x = tempx/30;
-		int y = tempy/30;
-		grid[x][y]=1;
-		repaint();
-		
-	}
-
-
-	@Override
-	public void mouseEntered(MouseEvent arg0) {
-		// TODO Auto-generated method stub
-		
-	}
-
-
-	@Override
-	public void mouseExited(MouseEvent arg0) {
-		// TODO Auto-generated method stub
-		
-	}
-
-
-	@Override
-	public void mousePressed(MouseEvent arg0) {
-		// TODO Auto-generated method stub
-		
-	}
-
-
-	@Override
-	public void mouseReleased(MouseEvent arg0) {
-		// TODO Auto-generated method stub
-		
-	}
+	
+	
 }

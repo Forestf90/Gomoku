@@ -36,6 +36,8 @@ public class form extends JFrame implements MouseListener{
 	JTextArea konsola = new JTextArea();
 	//Font czcionka = new Font(Font.getDefault(), 24);
 	
+	Thread odbior;
+	
 	private Socket socket ;
 	private DataOutputStream dos;
 	private DataInputStream dis;
@@ -91,10 +93,13 @@ public class form extends JFrame implements MouseListener{
 			dis = new DataInputStream(socket.getInputStream());
 			konsola.setText("Polaczono z serwerem");
 			((plansza) mapa).ruch=false;
-			odbierz();
+			//odbierz();
+			konsola.setText("Ruch przeciwnika");
+			tworz_watek();
+			
 			//accepted = true;
 		} catch (IOException e) {
-			konsola.setText("Oczekiwanie na graczy");
+			konsola.setText("Twoj ruch");
 			start_serwer();
 		}
 		
@@ -106,7 +111,7 @@ public class form extends JFrame implements MouseListener{
 		int port =Integer.parseInt(text_port.getText());
 		socket =null;
 		try {
-			serverSocket = new ServerSocket(port, 8, InetAddress.getByName("localhost"));
+			serverSocket = new ServerSocket(port, 8);
 			((plansza) mapa).ruch=true;
 			czekaj_na_gracza();
 		} catch (Exception e) {
@@ -124,6 +129,7 @@ public class form extends JFrame implements MouseListener{
 			socket = serverSocket.accept();
 			dos = new DataOutputStream(socket.getOutputStream());
 			dis = new DataInputStream(socket.getInputStream());
+			tworz_watek();
 			//accepted = true;
 			//System.out.println("CLIENT HAS REQUESTED TO JOIN, AND WE HAVE ACCEPTED");
 		} catch (IOException e) {
@@ -131,7 +137,7 @@ public class form extends JFrame implements MouseListener{
 		}
 	}
 	public void wyslij(int x , int y) {
-		
+		konsola.setText("Ruch przeciwnika");
 		try {
 			dos.writeInt(x);
 			dos.flush();
@@ -139,16 +145,16 @@ public class form extends JFrame implements MouseListener{
 			dos.flush();
 			revalidate();
 			mapa.setFocusable(false);
-			//((plansza) mapa).ruch=false;
-			odbierz();
+			((plansza) mapa).ruch=false;
+			//odbierz();
 		} catch (IOException e1) {
 			//errors++;
 			e1.printStackTrace();
 		}
 		
 	}
-	
-	public synchronized void odbierz() {
+	/*
+	public void odbierz() {
 		try {
 			super.repaint();
 			super.revalidate();
@@ -168,6 +174,38 @@ public class form extends JFrame implements MouseListener{
 			e.printStackTrace();
 		}
 		mapa.repaint();
+	}
+	
+	*/
+	public void tworz_watek() {
+		odbior = new Thread() {
+			
+			public synchronized void run() {
+				while (true) {
+					try {
+					int x = dis.readInt();
+					int y = dis.readInt();
+					
+					if(((plansza)mapa).pierwszy) {
+						((plansza) mapa).grid[x][y]=2;
+					}else {
+						((plansza) mapa).grid[x][y]=1;
+					}
+					mapa.repaint();
+					mapa.setFocusable(true);
+					((plansza) mapa).ruch=true;
+					konsola.setText("Twoj ruch");
+				} catch (IOException e) {
+					// TODO Auto-generated catch block
+					konsola.setText("Utracono polaczenie - gra zostaje zakonczona");
+					e.printStackTrace();
+					break;
+				}
+					
+				}
+			}
+		};
+		odbior.start();
 	}
 
 	@Override
@@ -193,6 +231,7 @@ public class form extends JFrame implements MouseListener{
 
 		
 		wyslij(x ,y);
+
 		//getParent().wyslij();
 		//gomoku.form.wyslij(x ,y);
 	}

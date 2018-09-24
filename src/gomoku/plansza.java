@@ -64,5 +64,136 @@ public class plansza extends JPanel {
 		
 	}
 	
+	public boolean sprawdz_zwyciestwo(int x , int y) {
+		int in_row=1;
+		boolean lewo=true , prawo=true;
+		int temp;
+		if(pierwszy) temp=1;
+		else temp=2;
+		
+		
+		for(int i=1; i<=4 ; i++) {
+			if(lewo && grid[x-i][y]==temp) in_row++;
+			else lewo =false;
+			if(prawo && grid[x+i][y]==temp) in_row++;
+			else prawo =false;
+			
+		}
+		if(in_row>=5)return true;
+		else in_row=1;
+		
+		lewo =true;
+		prawo=true;
+		
+		
+		for(int i=1; i<=4 ; i++) {
+			if(lewo && grid[x-i][y-i]==temp) in_row++;
+			else lewo =false;
+			if(prawo && grid[x+i][y+i]==temp) in_row++;
+			else prawo =false;
+			
+		}
+		if(in_row>=5)return true;
+		else in_row=1;
+		
+		lewo =true;
+		prawo=true;
+		
+		
+		for(int i=1; i<=4 ; i++) {
+			if(lewo && grid[x+i][y-i]==temp) in_row++;
+			else lewo =false;
+			if(prawo && grid[x-i][y+i]==temp) in_row++;
+			else prawo =false;
+			
+		}
+		if(in_row>=5)return true;
+		else in_row=1;
+		
+		lewo =true;
+		prawo=true;
+		
+		
+		
+		for(int i=1; i<=4 ; i++) {
+			if(lewo && grid[x][y-i]==temp) in_row++;
+			else lewo =false;
+			if(prawo && grid[x][y+i]==temp) in_row++;
+			else prawo =false;
+			
+		}
+		if(in_row>=5)return true;
+		else in_row=1;
+		
+
+		
+		return false;
+	}
+	
+	public boolean sprawdz_przegrana(int x , int y) {
+		int in_row=1;
+		boolean lewo=true , prawo=true;
+		int temp;
+		if(pierwszy) temp=2;
+		else temp=1;
+		
+		
+		for(int i=1; i<=4 ; i++) {
+			if(lewo && grid[x-i][y]==temp) in_row++;
+			else lewo =false;
+			if(prawo && grid[x+i][y]==temp) in_row++;
+			else prawo =false;
+			
+		}
+		if(in_row>=5)return true;
+		else in_row=1;
+		
+		lewo =true;
+		prawo=true;
+		
+		
+		for(int i=1; i<=4 ; i++) {
+			if(lewo && grid[x-i][y-i]==temp) in_row++;
+			else lewo =false;
+			if(prawo && grid[x+i][y+i]==temp) in_row++;
+			else prawo =false;
+			
+		}
+		if(in_row>=5)return true;
+		else in_row=1;
+		
+		lewo =true;
+		prawo=true;
+		
+		
+		for(int i=1; i<=4 ; i++) {
+			if(lewo && grid[x+i][y-i]==temp) in_row++;
+			else lewo =false;
+			if(prawo && grid[x-i][y+i]==temp) in_row++;
+			else prawo =false;
+			
+		}
+		if(in_row>=5)return true;
+		else in_row=1;
+		
+		lewo =true;
+		prawo=true;
+		
+		
+		
+		for(int i=1; i<=4 ; i++) {
+			if(lewo && grid[x][y-i]==temp) in_row++;
+			else lewo =false;
+			if(prawo && grid[x][y+i]==temp) in_row++;
+			else prawo =false;
+			
+		}
+		if(in_row>=5)return true;
+		else in_row=1;
+		
+
+		
+		return false;
+	}
 	
 }

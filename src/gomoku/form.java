@@ -130,8 +130,7 @@ public class form extends JFrame implements MouseListener{
 			dos = new DataOutputStream(socket.getOutputStream());
 			dis = new DataInputStream(socket.getInputStream());
 			tworz_watek();
-			//accepted = true;
-			//System.out.println("CLIENT HAS REQUESTED TO JOIN, AND WE HAVE ACCEPTED");
+
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
@@ -195,6 +194,7 @@ public class form extends JFrame implements MouseListener{
 					mapa.setFocusable(true);
 					((plansza) mapa).ruch=true;
 					konsola.setText("Twoj ruch");
+					if(((plansza) mapa).sprawdz_przegrana(x ,y)) konsola.setText("Przegrales");
 				} catch (IOException e) {
 					// TODO Auto-generated catch block
 					konsola.setText("Utracono polaczenie - gra zostaje zakonczona");
@@ -231,6 +231,7 @@ public class form extends JFrame implements MouseListener{
 
 		
 		wyslij(x ,y);
+		if(((plansza) mapa).sprawdz_zwyciestwo(x,y)) konsola.setText("Wygrales");
 
 		//getParent().wyslij();
 		//gomoku.form.wyslij(x ,y);

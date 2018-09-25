@@ -131,6 +131,8 @@ public class plansza extends JPanel {
 	}
 	
 	public boolean sprawdz_przegrana(int x , int y) {
+		
+		ruch=false;
 		int in_row=1;
 		boolean lewo=true , prawo=true;
 		int temp;
@@ -192,8 +194,21 @@ public class plansza extends JPanel {
 		else in_row=1;
 		
 
-		
+		ruch=true;
 		return false;
 	}
+	
+	public void reset() {
+		for(int i=0 ; i<grid.length ; i++) {
+			for(int j=0 ; j<grid[i].length ;j++) {
+				grid[i][j]=0;
+			}
+		}
+		
+		if(pierwszy) ruch=true;
+		else ruch=false;
+		this.repaint();
+	}
+	
 	
 }

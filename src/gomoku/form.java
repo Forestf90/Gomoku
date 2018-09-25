@@ -29,9 +29,9 @@ public class form extends JFrame implements MouseListener{
 	JPanel panel_boczny = new JPanel();
 	
 	JLabel Lab_ip = new JLabel("Podaj ip: ");
-	JTextField text_ip = new JTextField("localhost");
+	JTextField text_ip = new JTextField("");
 	JLabel Lab_port = new JLabel("Podaj port: ");
-	JTextField text_port =new JTextField("2222");
+	JTextField text_port =new JTextField("");
 	JButton but_lacz = new JButton("Polacz");
 	JTextArea konsola = new JTextArea();
 	//Font czcionka = new Font(Font.getDefault(), 24);
@@ -61,6 +61,8 @@ public class form extends JFrame implements MouseListener{
 		    @Override
 		    public void actionPerformed(ActionEvent e)
 		    {
+		    	reset_socketow();
+		    	((plansza) mapa).reset();
 		        polacz();
 		    }
 	  });
@@ -192,9 +194,9 @@ public class form extends JFrame implements MouseListener{
 					}
 					mapa.repaint();
 					mapa.setFocusable(true);
-					((plansza) mapa).ruch=true;
+					//((plansza) mapa).ruch=true;
 					konsola.setText("Twoj ruch");
-					if(((plansza) mapa).sprawdz_przegrana(x ,y)) konsola.setText("Przegrales");
+					if(((plansza) mapa).sprawdz_przegrana(x ,y)) konsola.setText("Przegrales - Aby rozpoczac gre jeszcze raz nawiaz polaczenie ponownie");
 				} catch (IOException e) {
 					// TODO Auto-generated catch block
 					konsola.setText("Utracono polaczenie - gra zostaje zakonczona");
@@ -208,6 +210,43 @@ public class form extends JFrame implements MouseListener{
 		odbior.start();
 	}
 
+	
+	public void reset_socketow() {
+		if(dos!=null) {
+			try {
+				dos.close();
+				dis.close();
+				dos=null;
+				dis=null;
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			
+			if(socket!=null) {
+				try {
+					socket.close();
+					socket=null;
+				} catch (IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+				
+			}
+			
+			if(serverSocket!=null) {
+				try {
+					serverSocket.close();
+					serverSocket=null;
+				} catch (IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			}
+			
+		}
+		
+	}
 	@Override
 	public void mouseClicked(MouseEvent e) {
 		// TODO Auto-generated method stub
@@ -231,7 +270,7 @@ public class form extends JFrame implements MouseListener{
 
 		
 		wyslij(x ,y);
-		if(((plansza) mapa).sprawdz_zwyciestwo(x,y)) konsola.setText("Wygrales");
+		if(((plansza) mapa).sprawdz_zwyciestwo(x,y)) konsola.setText("Wygrales - Aby rozpoczac gre jeszcze raz nawiaz polaczenie ponownie");
 
 		//getParent().wyslij();
 		//gomoku.form.wyslij(x ,y);
